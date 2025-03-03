@@ -17,6 +17,7 @@ import {
   TabList,
   TabPanel,
   TabPanels,
+  Menu,
 } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
