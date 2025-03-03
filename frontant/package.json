@@ -309,7 +309,10 @@
     "yaml": "^2.6.1",
     "yocto-queue": "^0.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^6.0.3"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"
