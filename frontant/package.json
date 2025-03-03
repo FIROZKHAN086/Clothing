@@ -2,7 +2,6 @@
   "name": "frontant",
   "version": "1.0.0",
   "type": "module",
-  
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -236,7 +235,7 @@
     "react-alice-carousel": "^2.9.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.5.2",
-    "react-icons": "^5.4.0",
+    "react-icons": "^5.5.0",
     "react-is": "^16.13.1",
     "react-refresh": "^0.14.2",
     "react-router": "^7.0.2",
