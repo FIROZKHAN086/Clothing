@@ -251,9 +251,10 @@ export default function Navbar({setLoginpop}) {
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               <div className="flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                {token ? (
-                  <button 
-                    onClick={() => {
+                
+              {token ? (
+                <button 
+                  onClick={() => {
                       localStorage.removeItem("token");
                       setToken(null);
                     }} 
@@ -269,6 +270,7 @@ export default function Navbar({setLoginpop}) {
                     Sign in
                   </button>
                 )}
+                
               </div>
             </div>
 
@@ -405,6 +407,9 @@ export default function Navbar({setLoginpop}) {
                 </div>
 
                 {/* //cart item */}
+                <div>
+                  {token === "67c624c401a956f0d06313ec" ? <> <Link to="/admin" className='text-sm font-medium text-gray-700 hover:text-gray-800'> <button>Admin</button> </Link> </> : <></>}
+                </div>
                 {token ? (
                   <div className="ml-4 flex  lg:ml-6">
                     <button onClick={() => {

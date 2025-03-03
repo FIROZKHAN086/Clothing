@@ -16,8 +16,7 @@ export const StoreProvider = ({ children }) => {
   });
   const [user, setUser] = useState(null);
 
-  const url = "http://localhost:3000";
-
+  const url = "https://clothing-a7pp.onrender.com";
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);

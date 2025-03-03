@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { StoreContext } from '../../../Context/Context';
 
 const ProductForm = () => {
+  const { url } = useContext(StoreContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const [formData, setFormData] = useState({
@@ -24,7 +26,7 @@ const ProductForm = () => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/product/getProduct/${id}`);
+      const response = await axios.get(`${url}/api/product/getProduct/${id}`);
       setFormData(response.data.product);
     } catch (error) {
       console.error('Error fetching product:', error);
@@ -35,9 +37,9 @@ const ProductForm = () => {
     e.preventDefault();
     try {
       if (id) {
-        await axios.put(`http://localhost:3000/api/product/updateProduct/${id}`, formData);
+        await axios.put(`${url}/api/product/updateProduct/${id}`, formData);
       } else {
-        await axios.post('http://localhost:3000/api/product/createProduct', formData);
+        await axios.post(`${url}/api/product/createProduct`, formData);
       }
       navigate('/admin/products');
     } catch (error) {

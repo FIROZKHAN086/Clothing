@@ -4,9 +4,10 @@ import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import {toast} from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
-const Login = ({ setLoginpop }) => {
 
-  const url = "http://localhost:3000";
+
+const Login = ({ setLoginpop }) => {
+  const url = "https://clothing-a7pp.onrender.com";
   const navigate = useNavigate();
   const { token, setToken } = useContext(StoreContext);
   const [curr, setcurr] = useState("Login");
@@ -33,11 +34,7 @@ const Login = ({ setLoginpop }) => {
       password: "",
     });
 
-    if(data.email === "admin@gmail.com" && data.password === "123456789"){
-      setLoginpop(false);
-      setToken(response.data._id);
-      navigate("/admin");
-    }
+    
 
     if (response.data) {
       toast.success("Login successful");
