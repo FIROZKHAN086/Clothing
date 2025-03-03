@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-function Header() {
+const Header = () => {
     const homeref = useRef()
     const textRef = useRef()
 
