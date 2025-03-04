@@ -7,7 +7,7 @@ const Cart = () => {
   const { cart, removefromcart, quantity } = useContext(StoreContext);
 
   const calculateTotal = () => {
-    return cart.reduce((total, item) => total + parseFloat(item.price.replace('$', '')), 0).toFixed(2);
+    return cart.reduce((total, item) => total + (typeof item.price === 'string' ? parseFloat(item.price.replace('$', '')) : parseFloat(item.price)), 0).toFixed(2);
   };
   useEffect(() => {
     window.scrollTo(0, 0);

@@ -20,10 +20,7 @@ import {
   FaRegWindowClose
 } from 'react-icons/fa';
 
-
 const navigation = {
-
-  
   categories: [
     {
       id: 'women',
@@ -146,7 +143,6 @@ const navigation = {
   ],
 }
 
-
 export default function Navbar({setLoginpop}) {
   const { cart, token, setToken } = useContext(StoreContext);
   const [isOpen, setIsOpen] = useState(false)
@@ -166,221 +162,131 @@ export default function Navbar({setLoginpop}) {
   return (
     <div className="bg-white relative z-20 top-0">
       {/* Mobile menu */}
-      <div className={`relative z-40 lg:hidden ${showMobileMenu ? 'block' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-black/25" onClick={toggleMobileMenu} />
+      <div className={`fixed inset-0 z-50 lg:hidden ${showMobileMenu ? 'block' : 'hidden'}`}>
+        <div className="fixed inset-0 bg-black bg-opacity-50" onClick={toggleMobileMenu} />
 
-        <div className="fixed inset-0 z-40 flex">
-          <div className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
-            <div className="flex px-4 pb-2 pt-5">
-              <button
-                type="button"
-                onClick={toggleMobileMenu}
-                className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
-              >
-                <span className="absolute -inset-0.5" />
-                <span className="sr-only">Close menu</span>
-                <FaTimes className="size-6" />
-              </button>
-            </div>
+        <div className="fixed inset-y-0 left-0 w-full max-w-sm bg-white shadow-xl overflow-y-auto">
+          <div className="flex justify-between items-center p-4 border-b">
+            <h2 className="text-xl font-bold">Menu</h2>
+            <button onClick={toggleMobileMenu}>
+              <FaTimes className="h-6 w-6" />
+            </button>
+          </div>
 
-            {/* Links */}
-            <div className="mt-2">
-              <div className="border-b border-gray-200">
-                <div className="-mb-px flex space-x-8 px-4">
-                  {navigation.categories.map((category) => (
-                    <button
-                      key={category.name}
-                      onClick={() => toggleDropdown(category)}
-                      className="flex items-center flex-1 whitespace-nowrap border-b-2 border-transparent px-1 py-4 text-base font-medium text-gray-900"
-                    >
-                      {category.name}
-                      <FaChevronDown className={`ml-2 transition-transform ${selectedCategory === category ? 'rotate-180' : ''}`} />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {navigation.categories.map((category) => (
-                <div 
-                  key={category.name} 
-                  className={`space-y-10 px-4 pb-8 pt-10 ${selectedCategory === category ? 'block' : 'hidden'}`}
+          <div className="p-4">
+            {navigation.categories.map((category) => (
+              <div key={category.name} className="mb-4">
+                <button
+                  onClick={() => toggleDropdown(category)}
+                  className="flex items-center justify-between w-full py-2"
                 >
-                  {/* Category content */}
-                  <div className="grid grid-cols-2 gap-x-4">
-                    {category.featured.map((item) => (
-                      <div key={item.name} className="group relative text-sm">
-                        <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                          <img src={item.imageSrc} alt={item.imageAlt} className="object-cover object-center" />
+                  <span className="text-lg font-medium">{category.name}</span>
+                  <FaChevronDown className={`transform transition-transform ${selectedCategory === category ? 'rotate-180' : ''}`} />
+                </button>
+
+                {selectedCategory === category && (
+                  <div className="mt-2 ml-4 space-y-2">
+                    {category.sections.map((section) => (
+                      <div key={section.name} className="mb-4">
+                        <h3 className="font-medium mb-2">{section.name}</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {section.items.map((item) => (
+                            <a key={item.name} href={item.href} className="text-gray-600 hover:text-gray-900">
+                              {item.name}
+                            </a>
+                          ))}
                         </div>
-                        <a href={item.href} className="mt-6 block font-medium text-gray-900">
-                          <span className="absolute inset-0 z-10" aria-hidden="true" />
-                          {item.name}
-                        </a>
-                        <p aria-hidden="true" className="mt-1">Shop now</p>
                       </div>
                     ))}
                   </div>
-                  {category.sections.map((section) => (
-                    <div key={section.name}>
-                      <p className="font-medium text-gray-900">{section.name}</p>
-                      <ul role="list" className="mt-6 flex flex-col space-y-6">
-                        {section.items.map((item) => (
-                          <li key={item.name} className="flow-root">
-                            <a href={item.href} className="-m-2 block p-2 text-gray-500">
-                              {item.name}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              {navigation.pages.map((page) => (
-                <div key={page.name} className="flow-root">
-                  <a href={page.href} className="-m-2 block p-2 font-medium text-gray-900">
-                    {page.name}
-                  </a>
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              <div className="flow-root">
-                {token ? (
-                  <button 
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      setToken(null);
-                    }}
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Logout
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setLoginpop(true)}
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Sign in
-                  </button>
                 )}
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <header className="fixed z-10 w-screen bg-white">
-        <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="border-b border-gray-200">
-            <div className="flex h-16 items-center justify-between">
-              <button
-                type="button"
-                className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
-                onClick={toggleMobileMenu}
-              >
-                <span className="absolute -inset-0.5" />
-                <span className="sr-only">Open menu</span>
-                <FaBars className="size-6" />
-              </button>
+      {/* Desktop header */}
+      <header className="fixed w-full bg-white shadow-sm">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Mobile menu button */}
+            <button
+              className="lg:hidden p-2"
+              onClick={toggleMobileMenu}
+            >
+              <FaBars className="h-6 w-6" />
+            </button>
 
-              {/* Logo */}
-              <div className="ml-4 flex lg:ml-0">
-                <a href="#">
-                  <h1 className="h-8 w-auto font-bold text-2xl">KING'S FASHION</h1>
-                </a>
-              </div>
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Link to="/" className="text-2xl font-bold">KING'S FASHION</Link>
+            </div>
 
-              {/* Desktop Navigation */}
-              <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-center lg:space-x-6">
-                {navigation.categories.map((category) => (
-                  <div key={category.name} className="relative">
-                    <button
-                      onClick={() => toggleDropdown(category)}
-                      className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      {category.name}
-                      <FaChevronDown className={`transition-transform ${selectedCategory === category ? 'rotate-180' : ''}`} />
-                    </button>
+            {/* Desktop navigation */}
+            <div className="hidden lg:flex items-center space-x-8">
+              {navigation.categories.map((category) => (
+                <div key={category.name} className="relative group">
+                  <button className="flex items-center space-x-1 text-gray-700 hover:text-gray-900">
+                    <span>{category.name}</span>
+                    <FaChevronDown className="h-4 w-4" />
+                  </button>
 
-                    {selectedCategory === category && (
-                      <div className="absolute left-0 mt-2 w-screen max-w-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                        <div className="p-4">
-                          {category.sections.map((section) => (
-                            <div key={section.name} className="mb-4">
-                              <p className="text-sm font-medium text-gray-900">{section.name}</p>
-                              <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2">
-                                {section.items.map((item) => (
-                                  <a
-                                    key={item.name}
-                                    href={item.href}
-                                    className="text-sm text-gray-500 hover:text-gray-700"
-                                  >
-                                    {item.name}
-                                  </a>
-                                ))}
-                              </div>
-                            </div>
+                  <div className="absolute top-full left-0 w-screen max-w-md p-4 bg-white shadow-lg rounded-lg hidden group-hover:block">
+                    {category.sections.map((section) => (
+                      <div key={section.name} className="mb-4">
+                        <h3 className="font-medium mb-2">{section.name}</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {section.items.map((item) => (
+                            <a key={item.name} href={item.href} className="text-gray-600 hover:text-gray-900">
+                              {item.name}
+                            </a>
                           ))}
                         </div>
                       </div>
-                    )}
+                    ))}
                   </div>
-                ))}
+                </div>
+              ))}
+            </div>
 
-                {navigation.pages.map((page) => (
-                  <a
-                    key={page.name}
-                    href={page.href}
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    {page.name}
-                  </a>
-                ))}
-              </div>
+            {/* Right side icons */}
+            <div className="flex items-center space-x-4">
+              {token === "67c624c401a956f0d06313ec" && (
+                <Link to="/admin" className="hidden sm:block text-sm font-medium">
+                  Admin
+                </Link>
+              )}
 
-              {/* Right side icons */}
-              <div className="flex items-center">
-                {token === "67c624c401a956f0d06313ec" && (
-                  <Link to="/admin" className="text-sm font-medium text-gray-700 hover:text-gray-800 mr-4">
-                    Admin
-                  </Link>
-                )}
-
-                {token ? (
-                  <div className="flex items-center space-x-4">
-                    <button
-                      onClick={() => {
-                        localStorage.removeItem("token");
-                        setToken(null);
-                      }}
-                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      Logout
-                    </button>
-                    <Link to="/Cart" className="flex items-center space-x-2">
-                      <FaShoppingBag className="size-6 text-gray-400 hover:text-gray-500" />
-                      <span className="text-sm font-medium text-gray-700">{cart.length}</span>
-                    </Link>
-                  </div>
-                ) : (
+              {token ? (
+                <>
                   <button
-                    onClick={() => setLoginpop(true)}
-                    className="flex items-center space-x-2 text-gray-700 hover:text-gray-800"
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      setToken(null);
+                    }}
+                    className="text-sm font-medium"
                   >
-                    <FaUserAlt className="size-6" />
-                    <span className="text-sm font-medium">Sign in</span>
+                    Logout
                   </button>
-                )}
+                  <Link to="/Cart" className="flex items-center">
+                    <FaShoppingBag className="h-6 w-6" />
+                    <span className="ml-1">{cart.length}</span>
+                  </Link>
+                </>
+              ) : (
+                <button
+                  onClick={() => setLoginpop(true)}
+                  className="flex items-center space-x-2"
+                >
+                  <FaUserAlt className="h-6 w-6" />
+                  <span className="hidden sm:inline">Sign in</span>
+                </button>
+              )}
 
-                <a href="#" className="ml-4 p-2 text-gray-400 hover:text-gray-500">
-                  <FaSearch className="size-6" />
-                </a>
-              </div>
+              <button className="p-2">
+                <FaSearch className="h-6 w-6" />
+              </button>
             </div>
           </div>
         </nav>
