@@ -14,7 +14,7 @@ const Home = ({setLoginpop}) => {
       <Slider/>
       
       <Cards setLoginpop={setLoginpop}/>
-      {/* <Footer/> */}
+      <Footer/>
     </div>
   )
 }

@@ -42,7 +42,7 @@ const App = () => {
           </Route>
         ) : null}
       </Routes>
-   <Footer/>
+   
     </StoreProvider>
   )
 }
