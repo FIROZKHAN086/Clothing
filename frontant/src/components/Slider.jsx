@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import gsap from 'gsap';
-import './css/slider.css';
+
 
 const Slider = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
