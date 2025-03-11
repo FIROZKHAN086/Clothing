@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FaEdit, FaTrash, FaPlus, FaSearch, FaFilter } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { StoreContext } from '../../../Context/Context';
-
+import { toast } from 'react-toastify';
 const ProductsList = () => {
   const { url } = useContext(StoreContext);
   const [products, setProducts] = useState([]);
@@ -31,6 +31,7 @@ const ProductsList = () => {
       try {
         await axios.delete(`${url}/api/product/deleteProduct/${id}`);
         fetchProducts();
+        toast.success('Product deleted successfully');
       } catch (error) {
         console.error('Error deleting product:', error);
       }

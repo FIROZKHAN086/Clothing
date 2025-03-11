@@ -8,14 +8,13 @@ import Footer from './components/Footer.jsx';
 import Product from './page/Product';
 import { StoreProvider } from './Context/Context';
 import About from './page/About';
-import ProctChecout from './page/ProctChecout';
 import { StoreContext } from './Context/Context';
 import Man from './components/Pages/Man.jsx';
 import AdminLayout from './components/Admin/AdminLayout';
 import ProductsList from './components/Admin/Products/ProductsList';
 import ProductForm from './components/Admin/Products/ProductForm';
-
-
+import Checkout from './page/Checkout';
+import Order from './components/Order';
 const App = () => {
   const { token } = useContext(StoreContext);
   useEffect(() => {
@@ -32,7 +31,8 @@ const App = () => {
         {token ? <Route path='/Cart' element={<Cart/>}/> : null}
         {token ? <Route path='/Product/:id' element={<Product/>}/> : null}  
         <Route path='/About' element={<About/>}/>
-        {token ? <Route path='/Checkout' element={<ProctChecout/>}/> : null}
+        {token ? <Route path='/Checkout' element={<Checkout/>}/> : null}
+        {token ? <Route path='/Orders' element={<Order/>}/> : null}
         <Route path='/Man' element={<Man/>}/>
         {token === "67c624c401a956f0d06313ec" ? (
           <Route path="/admin" element={<AdminLayout />}>

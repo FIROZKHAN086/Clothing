@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { FaBox, FaUsers, FaChartBar, FaCog, FaBars, FaTimes } from 'react-icons/fa';
+import { FaBox, FaUsers, FaChartBar, FaCog, FaBars, FaTimes, FaHouseDamage, FaHouseUser } from 'react-icons/fa';
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -15,6 +15,7 @@ const AdminLayout = () => {
     { path: '/admin/products', icon: FaBox, label: 'Products' },
     { path: '/admin/users', icon: FaUsers, label: 'Users' },
     { path: '/admin/settings', icon: FaCog, label: 'Settings' },
+    { path: '/', icon: FaHouseUser, label: 'Home' },
   ];
 
   return (

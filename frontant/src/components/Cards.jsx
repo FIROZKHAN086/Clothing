@@ -1,93 +1,124 @@
-import { useState , useContext } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import { StoreContext } from '../Context/Context';
-import { Link, Links } from 'react-router-dom';
+import { FaShoppingCart, FaFilter } from 'react-icons/fa';
 
-export default function Cards({setLoginpop}) {
-  const { addtocart, categories, quantity, token } = useContext(StoreContext);
-  const [selectedCategory, setSelectedCategory] = useState('trending');
+const Cards = ({ setLoginpop }) => {
+  const { url, addtocart, token } = useContext(StoreContext);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(`${url}/api/product/getAllProducts`);
+      setProducts(response.data.products);
+      // Extract unique categories
+      const uniqueCategories = [...new Set(response.data.products.map(p => p.category))];
+      setCategories(uniqueCategories);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      setLoading(false);
+    }
+  };
+
+  const handleAddToCart = (product) => {
+    if (!token) {
+      setLoginpop(true);
+      return;
+    }
+    addtocart(product);
+  };
+
+  const filteredProducts = selectedCategory === 'all' 
+    ? products 
+    : products.filter(product => product.category === selectedCategory);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-600"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Category Navigation */}
-      <div className="flex space-x-4 mb-8 overflow-x-auto pb-4 
-        [&::-webkit-scrollbar]:h-2
-        [&::-webkit-scrollbar-track]:rounded-full
-        [&::-webkit-scrollbar-track]:bg-gray-100
-        [&::-webkit-scrollbar-thumb]:rounded-full
-        [&::-webkit-scrollbar-thumb]:bg-indigo-600
-        [&::-webkit-scrollbar-thumb]:hover:bg-gray-400">
-        {categories.map((category) => (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          Our Products Collection
+        </h2>
+        
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
           <button
-            key={category.id}
-            onClick={() => setSelectedCategory(category.id)}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
-              selectedCategory === category.id
+            onClick={() => setSelectedCategory('all')}
+            className={`px-4 py-2 rounded-full transition-all ${
+              selectedCategory === 'all'
                 ? 'bg-indigo-600 text-white'
-                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
           >
-            {category.name}
+            All
           </button>
-        ))}
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-full transition-all ${
+                selectedCategory === category
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-gray-200 hover:bg-gray-300'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {categories
-          .find((cat) => cat.id === selectedCategory)
-          ?.products.map((product) => (
-            <motion.div
-              key={product.id}
-              layout
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="group relative"
-            >
-              <Link to={`/Product/${product.id}`}>
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity"
-                  />
-                </div>
-                <div className="mt-4 flex justify-between">
-                  <div>
-                    <h3 className="text-sm text-gray-700">
-                      {product.name}
-                    </h3>
-                  </div>
-                  <p className="text-sm font-medium text-gray-900">{product.price}</p>
-                </div>
-              </Link>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredProducts.map((product) => (
+          <div
+            key={product._id}
+            className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+          >
+            <div className="relative h-48 overflow-hidden">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-2 right-2 bg-indigo-600 text-white px-2 py-1 rounded-full text-sm">
+                ${product.price}
+              </div>
+            </div>
+            
+            <div className="p-4">
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">{product.name}</h3>
+              <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
               
-              <motion.div
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                {token ? (
-                  <button 
-                    onClick={() => addtocart(product)}
-                    className="mt-2 w-full bg-indigo-600 text-white py-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    Add to Cart
-                  </button>
-                ) : (
-                  <button 
-                    onClick={() => setLoginpop(true)}
-                    className="mt-2 w-full bg-indigo-600 text-white py-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    Login to Add to Cart
-                  </button>
-                )}
-              </motion.div>
-            </motion.div>
-          ))}
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-indigo-600">{product.category}</span>
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                >
+                  <FaShoppingCart />
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
-}
+};
+
+export default Cards;

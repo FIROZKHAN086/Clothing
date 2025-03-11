@@ -7,7 +7,19 @@ const Cart = () => {
   const { cart, removefromcart, quantity } = useContext(StoreContext);
 
   const calculateTotal = () => {
-    return cart.reduce((total, item) => total + (typeof item.price === 'string' ? parseFloat(item.price.replace('$', '')) : parseFloat(item.price)), 0).toFixed(2);
+    const total = cart.reduce((total, item) => {
+      let price;
+      if (typeof item.price === 'string') {
+        price = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+      } else {
+        price = parseFloat(item.price);
+      }
+      if (isNaN(price)) {
+        price = 0;
+      }
+      return total + price;
+    }, 0);
+    return total.toFixed(2);
   };
   useEffect(() => {
     window.scrollTo(0, 0);

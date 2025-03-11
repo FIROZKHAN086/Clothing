@@ -171,18 +171,28 @@ export default function Navbar({setLoginpop}) {
             <button onClick={toggleMobileMenu}>
               <FaTimes className="h-6 w-6" />
             </button>
+            
           </div>
 
           <div className="p-4">
+          {token === "67c624c401a956f0d06313ec" && (
+                <Link to="/admin" onClick={()=>setShowMobileMenu(false)} className=" sm:block text-sm font-medium">
+                  Admin
+                </Link>
+              )}
+            
             {navigation.categories.map((category) => (
               <div key={category.name} className="mb-4">
                 <button
                   onClick={() => toggleDropdown(category)}
                   className="flex items-center justify-between w-full py-2"
                 >
+                  
                   <span className="text-lg font-medium">{category.name}</span>
                   <FaChevronDown className={`transform transition-transform ${selectedCategory === category ? 'rotate-180' : ''}`} />
                 </button>
+                
+
 
                 {selectedCategory === category && (
                   <div className="mt-2 ml-4 space-y-2">
@@ -198,12 +208,17 @@ export default function Navbar({setLoginpop}) {
                         </div>
                       </div>
                     ))}
+                    
                   </div>
                 )}
+
+               
               </div>
             ))}
           </div>
+          
         </div>
+        
       </div>
 
       {/* Desktop header */}
@@ -252,28 +267,42 @@ export default function Navbar({setLoginpop}) {
 
             {/* Right side icons */}
             <div className="flex items-center space-x-4">
-              {token === "67c624c401a956f0d06313ec" && (
-                <Link to="/admin" className="hidden sm:block text-sm font-medium">
+              
+
+              {token ? (
+                <div className="relative flex  group">
+                  <div className="flex items-center space-x-4 cursor-pointer">
+                    <FaUserAlt className="h-6 w-6" />
+                    
+                  </div>
+
+                  <div className="absolute right-0 top-full w-48 bg-white shadow-lg rounded-lg hidden group-hover:block">
+                    <div className="py-2">
+                    {token === "67c624c401a956f0d06313ec" && (
+                <Link to="/admin" className=" sm:block text-sm font-medium">
                   Admin
                 </Link>
               )}
+                      <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Profile
+                      </Link>
+                      <Link to="/Orders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Orders
+                      </Link>
+                      <button
+                        onClick={() => {
+                          localStorage.removeItem("token");
+                          setToken(null);
+                        }}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
 
-              {token ? (
-                <>
-                  <button
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      setToken(null);
-                    }}
-                    className="text-sm font-medium"
-                  >
-                    Logout
-                  </button>
-                  <Link to="/Cart" className="flex items-center">
-                    <FaShoppingBag className="h-6 w-6" />
-                    <span className="ml-1">{cart.length}</span>
-                  </Link>
-                </>
+                  
+                </div>
               ) : (
                 <button
                   onClick={() => setLoginpop(true)}
@@ -283,6 +312,10 @@ export default function Navbar({setLoginpop}) {
                   <span className="hidden sm:inline">Sign in</span>
                 </button>
               )}
+              <Link to="/Cart" className="flex items-center ml-4">
+                    <FaShoppingBag className="h-6 w-6" />
+                    <span className="ml-1">{cart.length}</span>
+                  </Link>
 
               <button className="p-2">
                 <FaSearch className="h-6 w-6" />
