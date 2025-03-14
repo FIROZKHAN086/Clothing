@@ -29,6 +29,7 @@ const App = () => {
       <Navbar  setLoginpop={setLoginpop}/>
       <Routes>
         <Route path='/' element={<Home setLoginpop={setLoginpop}/>}/>
+        
         {token ? <Route path='/Cart' element={<Cart/>}/> : null}
         {token ? <Route path='/Product/:id' element={<Product/>}/> : null}  
         <Route path='/About' element={<About/>}/>
