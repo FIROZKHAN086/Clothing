@@ -15,6 +15,7 @@ import ProductsList from './components/Admin/Products/ProductsList';
 import ProductForm from './components/Admin/Products/ProductForm';
 import Checkout from './page/Checkout';
 import Order from './components/Order';
+import User from './components/Admin/User';
 const App = () => {
   const { token } = useContext(StoreContext);
   useEffect(() => {
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="products" element={<ProductsList />} />
             <Route path="products/add" element={<ProductForm />} />
             <Route path="products/edit/:id" element={<ProductForm />} />
+            <Route path="users" element={<User />} />
           </Route>
         ) : null}
       </Routes>

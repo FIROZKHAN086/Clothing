@@ -92,9 +92,15 @@ const registerUser = async (req, res) => {
     }
 };
 
-const user = async (req, res) => {  
+const listUsers = async (req, res) => {
     const users = await User.find();
     res.status(200).json(users);
 };
 
-export { loginUser, registerUser, user };
+const deleteUser = async (req, res) => {    
+    const { id } = req.params;
+    await User.findByIdAndDelete(id);
+    res.status(200).json({ message: 'User deleted successfully' });
+};
+
+export { loginUser, registerUser, listUsers, deleteUser };

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext } from 'react';
 import axios from 'axios';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { StoreContext } from '../../Context/Context';
 
 const User = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {url} = useContext(StoreContext);
 
   useEffect(() => {
     fetchUsers();
@@ -12,7 +14,7 @@ const User = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/user/getAllUsers');
+      const response = await axios.get(`${url}/api/user/getAllUsers`);
       setUsers(response.data);
       setLoading(false);
     } catch (error) {
@@ -24,7 +26,7 @@ const User = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/user/deleteUser/${id}`);
+        await axios.delete(`${url}/api/user/deleteUser/${id}`);
         fetchUsers();
       } catch (error) {
         console.error('Error deleting user:', error);
