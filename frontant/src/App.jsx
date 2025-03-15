@@ -16,6 +16,7 @@ import ProductForm from './components/Admin/Products/ProductForm';
 import Checkout from './page/Checkout';
 import Order from './components/Order';
 import User from './components/Admin/User';
+import ProductDetails from './Pages/ProductDetails.jsx';
 const App = () => {
   const { token } = useContext(StoreContext);
   useEffect(() => {
@@ -36,6 +37,7 @@ const App = () => {
         {token ? <Route path='/Checkout' element={<Checkout/>}/> : null}
         {token ? <Route path='/Orders' element={<Order/>}/> : null}
         <Route path='/Man' element={<Man/>}/>
+        <Route path='/ProductDetails/:id' element={<ProductDetails/>}/>
         {token === "67c624c401a956f0d06313ec" ? (
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="products" element={<ProductsList />} />
