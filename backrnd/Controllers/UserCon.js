@@ -1,5 +1,5 @@
-import User from '../Models/User-Model.js';
-import jwt from 'jsonwebtoken';
+import User from '../Models/User-model.js';
+import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -17,6 +17,8 @@ const loginUser = async (req, res) => {
             });
         }
 
+        
+
         // Generate token with user ID
         const token = jwt.sign(
             { userId: user._id },
@@ -24,6 +26,14 @@ const loginUser = async (req, res) => {
             { expiresIn: '24h' }
         );
 
+        const admin = await User.findOne({ email: 'admin@gmail.com', password: '123456789' });
+        if (admin) {
+            return res.status(401).json({ 
+                success: false, 
+                message: 'Invalid email or password' 
+            });
+        }
+        
         // Send response with user details and token
         res.status(200).json({
             success: true,

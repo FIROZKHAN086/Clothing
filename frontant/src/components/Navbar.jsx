@@ -143,6 +143,8 @@ const navigation = {
   ],
 }
 
+const admin = localStorage.getItem("userId") === "67c624c401a956f0d06313ec";
+
 export default function Navbar({setLoginpop}) {
   const { cart, token, setToken } = useContext(StoreContext);
   const [isOpen, setIsOpen] = useState(false)
@@ -175,7 +177,7 @@ export default function Navbar({setLoginpop}) {
           </div>
 
           <div className="p-4">
-          {token === "67c624c401a956f0d06313ec" && (
+          {admin && (
                 <Link to="/admin" onClick={()=>setShowMobileMenu(false)} className=" sm:block text-sm font-medium">
                   Admin
                 </Link>
@@ -278,8 +280,8 @@ export default function Navbar({setLoginpop}) {
 
                   <div className="absolute right-0 top-full w-48 bg-white shadow-lg rounded-lg hidden group-hover:block">
                     <div className="py-2">
-                    {token === "67c624c401a956f0d06313ec" && (
-                <Link to="/admin" className=" sm:block text-sm font-medium">
+                    {admin && (
+                <Link to="/admin" className=" text-center sm:block text-sm font-medium">
                   Admin
                 </Link>
               )}

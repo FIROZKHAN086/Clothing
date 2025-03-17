@@ -83,4 +83,4 @@ export const deleteProduct = async (req, res) => {
     }
 };
 
-export { createProduct, getProducts, getProductById, updateProduct, deleteProduct };    
+  

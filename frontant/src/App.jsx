@@ -9,14 +9,14 @@ import Product from './page/Product';
 import { StoreProvider } from './Context/Context';
 import About from './page/About';
 import { StoreContext } from './Context/Context';
-import Man from './components/Pages/Man.jsx';
+import Man from './Pages/Man';
 import AdminLayout from './components/Admin/AdminLayout';
 import ProductsList from './components/Admin/Products/ProductsList';
 import ProductForm from './components/Admin/Products/ProductForm';
 import Checkout from './page/Checkout';
 import Order from './components/Order';
 import User from './components/Admin/User';
-import ProductDetails from './Pages/ProductDetails.jsx';
+import ProductDetails from './page/ProductDetails';
 const App = () => {
   const { token } = useContext(StoreContext);
   useEffect(() => {
@@ -24,6 +24,9 @@ const App = () => {
   }, []);
 
   const [Loginpop, setLoginpop] = useState(false)
+
+  const admin = localStorage.getItem("userId") === "67c624c401a956f0d06313ec";
+
   return (
     <StoreProvider>
       {Loginpop?<Login setLoginpop={setLoginpop}/>:<></>}
@@ -37,8 +40,8 @@ const App = () => {
         {token ? <Route path='/Checkout' element={<Checkout/>}/> : null}
         {token ? <Route path='/Orders' element={<Order/>}/> : null}
         <Route path='/Man' element={<Man/>}/>
-        <Route path='/ProductDetails/:id' element={<ProductDetails/>}/>
-        {token === "67c624c401a956f0d06313ec" ? (
+        <Route path='/ProductDetails/:id' element={<ProductDetails setLoginpop={setLoginpop}/>}/>
+        {admin ? (
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="products" element={<ProductsList />} />
             <Route path="products/add" element={<ProductForm />} />

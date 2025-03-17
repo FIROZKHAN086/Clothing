@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import dbConnect from './DATA/dbconne.js';
 import userRoute from './Routes/UserRoute.js';
 import productRoutes from './Routes/ProductRoute.js';
-import orderRoutes from './Routes/Order-Route.js';
+
 
 
 const app = express();
@@ -14,12 +14,12 @@ app.use(bodyParser.json());
 
 dbConnect();
 
-app.use('/api/orders', orderRoutes);
+
 app.use('/api/user', userRoute);
 app.use('/api/product', productRoutes);
 
 // Error handling
-app.use(errorHandler);
+
 
 app.get('/', (req, res) => {
     res.send('Hello World');

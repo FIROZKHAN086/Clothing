@@ -36,11 +36,18 @@ const Login = ({ setLoginpop }) => {
         text: "Login successful",
         icon: "success",
       });
-      localStorage.setItem("token", response.data.token);
       const decodedToken = jwtDecode(response.data.token);
+      localStorage.setItem("token", response.data.token);
       setToken(decodedToken);
       console.log(decodedToken);
+      localStorage.setItem("userId", decodedToken.userId);
+      
       setLoginpop(false);
+      if (response.data.user.email === 'admin@gmail.com' && response.data.user.password === '123456789') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } else {
       Swal.fire({
         title: "Error",
@@ -48,6 +55,9 @@ const Login = ({ setLoginpop }) => {
         icon: "error",
       });
     }
+
+    
+
     setData({
       email: "",
       password: "",
