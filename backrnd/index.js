@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import dbConnect from './DATA/dbconne.js';
 import userRoute from './Routes/UserRoute.js';
 import productRoutes from './Routes/ProductRoute.js';
-
+import orderRoutes from './Routes/OrderRoute.js';
 
 
 const app = express();
@@ -17,7 +17,7 @@ dbConnect();
 
 app.use('/api/user', userRoute);
 app.use('/api/product', productRoutes);
-
+app.use('/api/order', orderRoutes);
 // Error handling
 
 
