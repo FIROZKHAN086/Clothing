@@ -2,8 +2,9 @@ import React, { useContext, useState } from "react";
 import { StoreContext } from "../Context/Context";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
-import {toast} from 'react-hot-toast';
+import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 
 const Login = ({ setLoginpop }) => {
@@ -27,41 +28,60 @@ const Login = ({ setLoginpop }) => {
   const isLogin = async (e) => {
     e.preventDefault();
     const response = await axios.post(`${url}/api/user/loginUser`, data);
-    console.log(response.data);
-    console.log(response.data._id);
+    
+
+    if (response.data) {
+      Swal.fire({
+        title: "Success",
+        text: "Login successful",
+        icon: "success",
+      });
+      localStorage.setItem("token", response.data.token);
+      const decodedToken = jwtDecode(response.data.token);
+      setToken(decodedToken);
+      console.log(decodedToken);
+      setLoginpop(false);
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: "Login failed",
+        icon: "error",
+      });
+    }
     setData({
       email: "",
       password: "",
     });
-
-    
-
-    if (response.data) {
-      toast.success("Login successful");
-    } else {
-      toast.error("Login failed");
-    }
-    setLoginpop(false);
-    setToken(response.data._id);
   };
 
   const isRegister = async (e) => {
     e.preventDefault();
     const response = await axios.post(`${url}/api/user/registerUser`, data);
-    console.log(response.data);
-    console.log(response.data._id);
     setData({
       name: "",
       email: "",
       password: "",
     });
+    
     if (response.data) {
-      toast.success("Register successful");
+      Swal.fire({
+        title: "Success",
+        text: "Register successful",
+        icon: "success",
+      });
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        const decodedToken = jwtDecode(response.data.token);
+        setToken(decodedToken);
+      }
+      setLoginpop(false);
     } else {
-      toast.error("Register failed");
+      Swal.fire({
+        title: "Error",
+        text: "Register failed",
+        icon: "error",
+      });
     }
-    setLoginpop(false);
-    setToken(response.data._id);
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {

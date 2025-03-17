@@ -5,7 +5,7 @@ import dbConnect from './DATA/dbconne.js';
 import userRoute from './Routes/UserRoute.js';
 import productRoutes from './Routes/ProductRoute.js';
 import orderRoutes from './Routes/Order-Route.js';
-import { errorHandler } from './middleware/errorMiddleware.js';
+
 
 const app = express();
 
